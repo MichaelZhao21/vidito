@@ -1,3 +1,5 @@
+#include <SDL3/SDL_render.h>
+#include <SDL3/SDL_video.h>
 #define SDL_MAIN_USE_CALLBACKS 2 // Use callbacks instead of main
 #include <SDL3/SDL.h>
 #include <SDL3_ttf/SDL_ttf.h>
@@ -168,5 +170,32 @@ SDL_AppResult SDL_AppIterate(void *appstate) {
 
 /* This function runs once at shutdown. */
 void SDL_AppQuit(void *appstate, SDL_AppResult result) {
-  /* SDL will clean up the window/renderer for us. */
+  (void)result;
+
+  if (result != SDL_APP_SUCCESS) {
+    SDL_LogError(SDL_LOG_CATEGORY_ERROR, "Application failed to run");
+  }
+
+  if (renderer) {
+    SDL_DestroyRenderer(renderer);
+  }
+
+  if (window) {
+    SDL_DestroyWindow(window);
+  }
+
+  if (fonts) {
+    // One font used
+    for (size_t i = 0; i < 1; i++) {
+      TTF_CloseFont(fonts[i]);
+    }
+
+    SDL_free(fonts);
+  }
+
+  if (textEngine) {
+    TTF_DestroyRendererTextEngine(textEngine);
+  }
+
+  TTF_Quit();
 }
