@@ -21,5 +21,3 @@ make
 ```
 
 Then you can run the `Vidito` executable.
-
-> Note: Currently I have the `Roboto-Regular.ttf` file copied manually to the `build` folder. This should be changed in the future
